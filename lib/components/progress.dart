@@ -21,7 +21,7 @@ class Progress extends StatelessWidget {
             child: Text(
               message,
               style: TextStyle(
-                fontSize: 24.0,
+                fontSize: 16.0,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColor,
               ),
