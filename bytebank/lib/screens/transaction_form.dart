@@ -6,6 +6,7 @@ import 'package:bytebank/components/transaction_auth_dialog.dart';
 import 'package:bytebank/http/webclients/transaction_webclient.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -108,17 +109,39 @@ class _TransactionFormState extends State<TransactionForm> {
     final Transaction transaction =
         await _webClient.save(transactionCreated, password).catchError(
       (e) {
+        if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+          FirebaseCrashlytics.instance.setCustomKey('exception', e.toString());
+          FirebaseCrashlytics.instance
+              .setCustomKey('http_body', transactionCreated.toString());
+          FirebaseCrashlytics.instance.recordError(e.message, null);
+        }
+
         _showFailureMessage(context, message: e.message);
       },
       test: (e) => e is HttpException,
     ).catchError(
       (e) {
+        if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+          FirebaseCrashlytics.instance.setCustomKey('exception', e.toString());
+          FirebaseCrashlytics.instance.setCustomKey('http_code', e.statusCode);
+          FirebaseCrashlytics.instance
+              .setCustomKey('http_body', transactionCreated.toString());
+          FirebaseCrashlytics.instance.recordError(e.message, null);
+        }
+
         _showFailureMessage(context,
             message: 'timeout submitting the transaction');
       },
       test: (e) => e is TimeoutException,
     ).catchError(
       (e) {
+        if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+          FirebaseCrashlytics.instance.setCustomKey('exception', e.toString());
+          FirebaseCrashlytics.instance
+              .setCustomKey('http_body', transactionCreated.toString());
+          FirebaseCrashlytics.instance.recordError(e.message, null);
+        }
+
         _showFailureMessage(context);
       },
     ).whenComplete(() {
