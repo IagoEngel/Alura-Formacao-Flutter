@@ -46,7 +46,6 @@ class Dashboard extends StatelessWidget {
   }
 
   void _showContactList(BuildContext context) {
-    FirebaseCrashlytics.instance.crash();
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ContactsList()),

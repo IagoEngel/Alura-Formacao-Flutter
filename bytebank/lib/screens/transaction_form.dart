@@ -8,6 +8,8 @@ import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -23,12 +25,14 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebClient _webClient = TransactionWebClient();
   final String _transactionId = Uuid().v4();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _sending = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('New transaction'),
       ),
@@ -170,9 +174,34 @@ class _TransactionFormState extends State<TransactionForm> {
       {String message = 'Unknown error'}) {
     showDialog(
       context: context,
-      builder: (contextDialog) {
-        return FailureDialog(message);
-      },
+      builder: (_) => NetworkGiffyDialog(
+        image: Image.asset('images/error.gif'),
+        title: Text('OPS',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
+        description: Text(
+          message,
+          textAlign: TextAlign.center,
+        ),
+        entryAnimation: EntryAnimation.TOP,
+        onOkButtonPressed: () {},
+      ),
     );
+
+    // showToast(message, gravity: Toast.BOTTOM);
+
+    // final snackBar = SnackBar(content: Text(message));
+    // _scaffoldKey.currentState.showSnackBar(snackBar);
+
+    // showDialog(
+    //   context: context,
+    //   builder: (contextDialog) {
+    //     return FailureDialog(message);
+    //   },
+    // );
+  }
+
+  void showToast(String msg, {int duration = 5, int gravity}) {
+    Toast.show(msg, context, duration: duration, gravity: gravity);
   }
 }
