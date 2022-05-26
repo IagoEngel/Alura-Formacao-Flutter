@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Progress extends StatelessWidget {
   final String message;
-  
+
   Progress({this.message = 'LOADING'});
 
   @override
@@ -28,6 +28,20 @@ class Progress extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ProgressView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Processing'),
+      ),
+      body: Progress(
+        message: 'Sending...',
       ),
     );
   }
