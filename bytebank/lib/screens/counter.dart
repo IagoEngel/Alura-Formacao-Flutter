@@ -22,7 +22,7 @@ class CounterView extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     //não tem como saber quando rebuildar
-    final state = context.read<CounterCubit>().state;
+    //final state = context.read<CounterCubit>().state;
 
     return Scaffold(
       appBar: AppBar(

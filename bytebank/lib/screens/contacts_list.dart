@@ -1,5 +1,5 @@
 import 'package:bytebank/components/container.dart';
-import 'package:bytebank/components/progress.dart';
+import 'package:bytebank/components/progress/progress.dart';
 import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact_form.dart';
@@ -59,7 +59,7 @@ class ContactsListContainer extends BlocContainer {
 
 class ContactsList extends StatefulWidget {
   final ContactDAO _dao;
-  ContactsList(ContactDAO this._dao);
+  ContactsList(this._dao);
 
   @override
   _ContactsListState createState() => _ContactsListState();
