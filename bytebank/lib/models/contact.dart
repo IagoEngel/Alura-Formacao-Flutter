@@ -24,4 +24,14 @@ class Contact {
   String toString() {
     return 'Contact{id: $id, name: $name, accountNumber: $accountNumber}';
   }
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      accountNumber.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return super == other;
+  }
 }
